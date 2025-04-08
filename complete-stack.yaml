@@ -1,0 +1,122 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template for S3 bucket and Lambda function'
+
+Parameters:
+  BucketNamePrefix:
+    Type: String
+    Default: 'my-aws-demo'
+    Description: 'Prefix for the S3 bucket name'
+
+Resources:
+  # S3 Bucket
+  DemoBucket:
+    Type: 'AWS::S3::Bucket'
+    Properties:
+      BucketName: !Sub '${BucketNamePrefix}-${AWS::AccountId}'
+      AccessControl: Private
+      VersioningConfiguration:
+        Status: Enabled
+      Tags:
+        - Key: Purpose
+          Value: Demo
+
+  # IAM Role for Lambda
+  LambdaExecutionRole:
+    Type: 'AWS::IAM::Role'
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: 'sts:AssumeRole'
+      ManagedPolicyArns:
+        - 'arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole'
+      Policies:
+        - PolicyName: S3BucketAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - 's3:ListBucket'
+                  - 's3:GetObject'
+                Resource:
+                  - !GetAtt DemoBucket.Arn
+                  - !Sub '${DemoBucket.Arn}/*'
+
+  # Lambda Function
+  ListS3ObjectsFunction:
+    Type: 'AWS::Lambda::Function'
+    Properties:
+      FunctionName: !Sub '${AWS::StackName}-list-s3-objects'
+      Handler: index.lambda_handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.9
+      Timeout: 30
+      MemorySize: 128
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref DemoBucket
+      Code:
+        ZipFile: |
+          import boto3
+          import json
+          import os
+
+          def lambda_handler(event, context):
+              try:
+                  # Get bucket name from environment variable or event
+                  bucket_name = os.environ.get('BUCKET_NAME') or event.get('bucket_name')
+                  
+                  if not bucket_name:
+                      return {
+                          'statusCode': 400,
+                          'body': json.dumps({'error': 'Bucket name not provided'})
+                      }
+                  
+                  # Initialize S3 client
+                  s3_client = boto3.client('s3')
+                  
+                  # List objects in the bucket
+                  response = s3_client.list_objects_v2(Bucket=bucket_name)
+                  
+                  # Extract object keys
+                  objects = []
+                  if 'Contents' in response:
+                      for obj in response['Contents']:
+                          objects.append({
+                              'key': obj['Key'],
+                              'size': obj['Size'],
+                              'last_modified': obj['LastModified'].isoformat()
+                          })
+                  
+                  return {
+                      'statusCode': 200,
+                      'body': json.dumps({
+                          'bucket': bucket_name,
+                          'objects': objects,
+                          'count': len(objects)
+                      })
+                  }
+                  
+              except Exception as e:
+                  return {
+                      'statusCode': 500,
+                      'body': json.dumps({'error': str(e)})
+                  }
+
+Outputs:
+  BucketName:
+    Description: 'Name of the S3 bucket'
+    Value: !Ref DemoBucket
+  BucketARN:
+    Description: 'ARN of the S3 bucket'
+    Value: !GetAtt DemoBucket.Arn
+  LambdaFunctionName:
+    Description: 'Name of the Lambda function'
+    Value: !Ref ListS3ObjectsFunction
+  LambdaFunctionARN:
+    Description: 'ARN of the Lambda function'
+    Value: !GetAtt ListS3ObjectsFunction.Arn
