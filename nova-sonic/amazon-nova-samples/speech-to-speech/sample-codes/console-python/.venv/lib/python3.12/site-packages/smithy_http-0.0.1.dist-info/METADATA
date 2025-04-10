@@ -1,0 +1,12 @@
+Metadata-Version: 2.4
+Name: smithy-http
+Version: 0.0.1
+Summary: HTTP components for Smithy tooling.
+License-File: NOTICE
+Requires-Python: >=3.12
+Requires-Dist: smithy-core
+Provides-Extra: aiohttp
+Requires-Dist: aiohttp<4.0,>=3.11.12; extra == 'aiohttp'
+Requires-Dist: yarl; extra == 'aiohttp'
+Provides-Extra: awscrt
+Requires-Dist: awscrt>=0.23.10; extra == 'awscrt'
