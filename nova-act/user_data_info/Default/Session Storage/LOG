@@ -1,0 +1,7 @@
+2025/04/04-18:35:13.969 1201cf Reusing MANIFEST /Users/xiaoyzhu/genai/nova-act/user_data_info/Default/Session Storage/MANIFEST-000001
+2025/04/04-18:35:13.971 1201cf Recovering log #7
+2025/04/04-18:35:13.971 1201cf (ignoring error) /Users/xiaoyzhu/genai/nova-act/user_data_info/Default/Session Storage/000007.log: dropping 390 bytes; Corruption: checksum mismatch
+2025/04/04-18:35:13.972 1201cf Reusing old log /Users/xiaoyzhu/genai/nova-act/user_data_info/Default/Session Storage/000007.log 
+2025/04/04-18:37:33.329 1201cf Level-0 table #11: started
+2025/04/04-18:37:33.336 1201cf Level-0 table #11: 26697 bytes OK
+2025/04/04-18:37:33.362 1201cf Delete type=0 #7

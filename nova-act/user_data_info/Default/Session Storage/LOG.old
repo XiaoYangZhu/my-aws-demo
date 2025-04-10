@@ -1,0 +1,6 @@
+2025/04/04-18:23:18.112 11a922 Reusing MANIFEST /Users/xiaoyzhu/genai/nova-act/user_data_info/Default/Session Storage/MANIFEST-000001
+2025/04/04-18:23:18.113 11a922 Recovering log #4
+2025/04/04-18:23:18.113 11a922 Reusing old log /Users/xiaoyzhu/genai/nova-act/user_data_info/Default/Session Storage/000004.log 
+2025/04/04-18:25:21.797 11af98 Level-0 table #8: started
+2025/04/04-18:25:21.799 11af98 Level-0 table #8: 26613 bytes OK
+2025/04/04-18:25:21.802 11af98 Delete type=0 #4

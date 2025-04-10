@@ -1,0 +1,5 @@
+2025/04/04-18:23:18.019 11a922 Reusing MANIFEST /Users/xiaoyzhu/genai/nova-act/user_data_info/Default/Local Storage/leveldb/MANIFEST-000001
+2025/04/04-18:23:18.024 11a922 Recovering log #5
+2025/04/04-18:23:18.027 11a922 Level-0 table #8: started
+2025/04/04-18:23:18.032 11a922 Level-0 table #8: 27108 bytes OK
+2025/04/04-18:23:18.036 11a922 Delete type=0 #5
