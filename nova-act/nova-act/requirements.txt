@@ -1,0 +1,11 @@
+cryptography
+fire
+install_playwright
+jsonschema
+pandas
+pillow
+playwright==1.48.0
+pydantic
+requests
+retry
+pytz

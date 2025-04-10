@@ -1,0 +1,33 @@
+[build-system]
+requires = [
+  "build",
+  "setuptools",
+  "wheel",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nova-act"
+description = "A Python SDK for Amazon Nova Act."
+dynamic = ["dependencies", "version"]
+requires-python = ">=3.10"
+authors = [
+  {name = "Amazon Nova Act", email="nova-act@amazon.com"},
+]
+license = {file = "LICENSE"}
+readme = "README.md"
+
+[project.optional-dependencies]
+dev = [
+  "build",
+  "setuptools",
+  "twine",
+  "wheel",
+]
+
+[tool.setuptools.dynamic]
+version = {attr = "nova_act.__version__.VERSION"}
+dependencies = {file = "requirements.txt"}
+
+[tool.setuptools.package-data]
+nova_act = ["artifacts/**/*", "artifacts/*"]
